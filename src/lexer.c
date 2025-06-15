@@ -20,7 +20,7 @@ token lexer(file* f) {
   size_t c_len = sizeof(check) / sizeof(void*);
   for (size_t i = 0; i < c_len; i++) {
     tkn_reset(&t);
-    if (check[i](&t, &f)) return t;
+    if (check[i](&t, f)) return t;
   }
 
   exit(EXIT_FAILURE);
