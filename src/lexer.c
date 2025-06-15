@@ -9,8 +9,7 @@
 #include "file.h"
 #include "token.h"
 
-token lexer(char* filename) {
-  file f = open(filename);
+token lexer(file* f) {
   token t;
 
   bool (*check[])(token*, file*) = {
