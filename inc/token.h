@@ -4,20 +4,23 @@
 #include "file.h"
 
 typedef enum {
+  /* raw token */
   tt_unknown,
   tt_eof,
   tt_break,
   tt_word,
-} token_type;
+  /* pair token */
+  tp_unknown,
+} t_token;
 
 typedef struct s_token {
-  token_type type;
-  char value[256];
+  t_token type;
+  char* value;
   int length;
   pos head;
   pos tail;
 } token;
 
-void tkn_reset(token *t);
+void tkn_reset(token* t);
 
 #endif

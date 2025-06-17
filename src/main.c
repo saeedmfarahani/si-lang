@@ -1,4 +1,7 @@
 #include <argp.h>
+#include <stdlib.h>
+
+#include "aloc.h"
 
 const char *argp_program_version = "Alpha 0.0.0";
 const char *argp_program_bug_address =
@@ -8,7 +11,7 @@ const char args_doc[] = "program.si";
 
 const struct argp_option options[] = {{0}};
 
-static error_t parser(int key, char *argp, struct argp_state *state) {
+static error_t opt_parser(int key, char *argp, struct argp_state *state) {
   static char *program = NULL;
   switch (key) {
     case ARGP_KEY_ARG:
@@ -23,8 +26,9 @@ static error_t parser(int key, char *argp, struct argp_state *state) {
   return 0;
 }
 
-const struct argp argp = {options, parser, args_doc, doc, 0, 0, 0};
+const struct argp argp = {options, opt_parser, args_doc, doc, 0, 0, 0};
 
 int main(int argc, char **argv) {
+  atexit(daloc_all);
   return argp_parse(&argp, argc, argv, 0, 0, 0);
 }
