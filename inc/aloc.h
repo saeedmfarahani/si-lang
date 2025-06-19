@@ -1,7 +1,12 @@
 #ifndef H_ALOC
 #define H_ALOC
 
-void *aloc(unsigned int size);
-void daloc_all();
+#include "list.h"
+
+void *new(unsigned long size);
+void delete(node *n,bool should_free_addr);
+void delete_all();
+
+static list trash = {0};
 
 #endif

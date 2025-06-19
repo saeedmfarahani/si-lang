@@ -6,12 +6,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "aloc.h"
 #include "file.h"
 #include "token.h"
 
 token* lexer(file* f) {
-  token* t = (token*)aloc(sizeof(token));
+  token* t = (token*)calloc(1, sizeof(token));
 
   bool (*check[])(token*, file*) = {
       lxr_is_gap,

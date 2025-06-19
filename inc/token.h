@@ -10,7 +10,7 @@ typedef enum {
   tt_break,
   tt_word,
   /* pair token */
-  tp_unknown,
+  tp_invalid,
 } t_token;
 
 typedef struct s_token {

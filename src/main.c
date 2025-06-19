@@ -29,6 +29,6 @@ static error_t opt_parser(int key, char *argp, struct argp_state *state) {
 const struct argp argp = {options, opt_parser, args_doc, doc, 0, 0, 0};
 
 int main(int argc, char **argv) {
-  atexit(daloc_all);
+  atexit(delete_all);
   return argp_parse(&argp, argc, argv, 0, 0, 0);
 }
