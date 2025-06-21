@@ -1,21 +1,50 @@
+#include "aloc.h"
+
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "list.h"
 
-static list trash = {0};
+list trash = {0};
 
-void *aloc(unsigned long size) {
-  void *p = calloc(0, size);
+void *new(unsigned long size) {
+  void *p = calloc(1, size);
   if (p == NULL) abort();
-  add_to_list(&trash, p);
+
+  node *n = calloc(1, sizeof(node));
+  if (n == NULL) abort();
+
+  if (trash.tail != NULL) {
+    n->prev = trash.tail;
+    trash.tail->next = n;
+  }
+
+  trash.tail = n;
+  n->address = p;
+
+  if (trash.head == NULL) {
+    trash.head = n;
+    n->prev = NULL;
+  }
   return p;
 }
 
-void daloc_all() {
-  while (trash.head->next != NULL) {
-    node *temp = trash.head;
-    free(temp->address);
-    trash.head = temp->next;
-    free(temp);
+void del(list *l, node *n, bool should_free_addr) {
+  node *t = n->trash;
+  list_del(&trash, t);
+  list_del(l, n);
+  if (should_free_addr) free(n->address);
+  free(n);
+  free(t);
+  t = NULL;
+}
+
+void delete_all() {
+  printf("clean up memory ...\n");
+  while (trash.head != NULL) {
+    node *t = trash.head;
+    trash.head = t->next;
+    if (t->address != NULL) free(t->address);
+    free(t);
   }
 }

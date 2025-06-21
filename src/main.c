@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "aloc.h"
+#include "merger.h"
 
 const char *argp_program_version = "Alpha 0.0.0";
 const char *argp_program_bug_address =
@@ -10,7 +11,6 @@ const char doc[] = "small languge powered by c inspired by go";
 const char args_doc[] = "program.si";
 
 const struct argp_option options[] = {{0}};
-
 static error_t opt_parser(int key, char *argp, struct argp_state *state) {
   static char *program = NULL;
   switch (key) {
@@ -20,6 +20,8 @@ static error_t opt_parser(int key, char *argp, struct argp_state *state) {
       break;
     case ARGP_KEY_END:
       if (!program) argp_usage(state);
+      merger(program);
+      exit(EXIT_SUCCESS);
       break;
     default: return ARGP_ERR_UNKNOWN;
   }
@@ -29,6 +31,6 @@ static error_t opt_parser(int key, char *argp, struct argp_state *state) {
 const struct argp argp = {options, opt_parser, args_doc, doc, 0, 0, 0};
 
 int main(int argc, char **argv) {
-  atexit(daloc_all);
+  atexit(delete_all);
   return argp_parse(&argp, argc, argv, 0, 0, 0);
 }
