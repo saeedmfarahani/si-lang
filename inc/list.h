@@ -15,4 +15,5 @@ typedef struct s_list {
 
 node* list_add(list* l, void* a);
 node* list_insert(list* l, void* a, node* p);
+void list_del(list* l, node* n);
 #endif

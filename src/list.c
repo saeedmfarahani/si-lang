@@ -2,23 +2,25 @@
 #include "list.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "aloc.h"
 
 node *list_add(list *l, void *a) {
   node *n = (node *)new (sizeof(node));
   n->trash = trash.tail;
-  if (n == NULL) abort();
 
-  n->next = NULL;
+  if (l->tail != NULL) {
+    n->prev = l->tail;
+    l->tail->next = n;
+  }
+  l->tail = n;
+  n->address = a;
+
   if (l->head == NULL) {
     l->head = n;
-    l->tail = n;
+    n->prev = NULL;
   }
-  n->prev = l->tail;
-  l->tail->next = n;
-  l->tail->address = a;
-  l->tail = n;
   return n;
 }
 
@@ -36,4 +38,11 @@ node *list_insert(list *l, void *a, node *p) {
   p->next = n;
 
   return n;
+}
+
+void list_del(list *l, node *n) {
+  if (l->head == n) l->head = n->next;
+  if (l->tail == n) l->tail = n->prev;
+  if (n->prev) n->prev->next = n->next;
+  if (n->next) n->next->prev = n->prev;
 }

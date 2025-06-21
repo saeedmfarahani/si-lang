@@ -20,4 +20,6 @@ typedef struct s_pair {
 
 typedef void (*token_pair)(pair *, token *);
 
+void merger(const char *filename);
+
 #endif

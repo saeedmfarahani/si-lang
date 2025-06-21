@@ -1,43 +1,50 @@
 #include "aloc.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "list.h"
 
+list trash = {0};
+
 void *new(unsigned long size) {
-  void *p = calloc(0, size);
+  void *p = calloc(1, size);
   if (p == NULL) abort();
 
   node *n = calloc(1, sizeof(node));
   if (n == NULL) abort();
 
-  n->next = NULL;
+  if (trash.tail != NULL) {
+    n->prev = trash.tail;
+    trash.tail->next = n;
+  }
+
+  trash.tail = n;
+  n->address = p;
+
   if (trash.head == NULL) {
     trash.head = n;
-    trash.tail = n;
+    n->prev = NULL;
   }
-  n->prev = trash.tail;
-  trash.tail->next = n;
-  trash.tail->address = p;
-  trash.tail = n;
-
   return p;
 }
 
-void delete(node *n, bool should_free_addr) {
+void del(list *l, node *n, bool should_free_addr) {
   node *t = n->trash;
-  t->prev->next = t->next;
-  t->next->prev = t->prev;
-  if (should_free_addr) free(t->address);
+  list_del(&trash, t);
+  list_del(l, n);
+  if (should_free_addr) free(n->address);
+  free(n);
   free(t);
   t = NULL;
 }
 
 void delete_all() {
-  while (trash.head->next != NULL) {
-    node *temp = trash.head;
-    free(temp->address);
-    trash.head = temp->next;
-    free(temp);
+  printf("clean up memory ...\n");
+  while (trash.head != NULL) {
+    node *t = trash.head;
+    trash.head = t->next;
+    if (t->address != NULL) free(t->address);
+    free(t);
   }
 }

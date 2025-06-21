@@ -5,18 +5,22 @@
 
 typedef enum {
   /* raw token */
-  tt_unknown,
+  tt_unk,
   tt_eof,
   tt_break,
   tt_word,
+  tt_int,
+  tt_bin,
+  tt_hex,
+  tt_float,
   /* pair token */
-  tp_invalid,
+  tp_inv,
 } t_token;
 
 typedef struct s_token {
   t_token type;
   char* value;
-  int length;
+  unsigned int length;
   pos head;
   pos tail;
 } token;

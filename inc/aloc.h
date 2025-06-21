@@ -3,10 +3,10 @@
 
 #include "list.h"
 
-void *new(unsigned long size);
-void delete(node *n,bool should_free_addr);
-void delete_all();
+extern list trash;
 
-static list trash = {0};
+void *new(unsigned long size);
+void del(list *l, node *n, bool should_free_addr);
+void delete_all();
 
 #endif

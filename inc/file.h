@@ -12,11 +12,13 @@ typedef struct s_pos {
 
 typedef struct s_file {
   FILE *fp;
+  const char *filename;
   char value;
   pos pos;
   pos pos_lst;
 } file;
 
-file open(char *filename);
+file open(const char *filename);
 void push(file *f);
+void pop(file *f);
 #endif
