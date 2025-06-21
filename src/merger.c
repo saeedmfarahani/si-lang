@@ -65,33 +65,21 @@ failed:
   return n->next;
 }
 
-void count(list* tree) {
-  node* t = tree->head;
-  int c = 0;
-  while (t) {
-    c++;
-    t = t->next;
-  };
-  printf("count: %d\n", c);
-}
-
 void merger(const char* filename) {
-  list tree = {0};
+  list l = {0};
 
   file f = open(filename);
   token* t = lexer(&f);
 
   while (t->type != tt_eof) {
-    list_add(&tree, t);
+    list_add(&l, t);
     t = lexer(&f);
   }
 
-  count(&tree);
   for (size_t i = 0; i < sizeof(si_lang) / sizeof(role); i++) {
-    node* leaf = tree.head;
-    while (leaf) {
-      leaf = mrg_apply(&tree, si_lang[i], leaf);
+    node* n = l.head;
+    while (n) {
+      n = mrg_apply(&l, si_lang[i], n);
     }
   }
-  count(&tree);
 }
